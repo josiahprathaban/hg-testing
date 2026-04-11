@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Endless Exploration Flow Test</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f6f1e7;
+        --panel: #fffaf1;
+        --line: #d3b88e;
+        --text: #2f2418;
+        --muted: #6a5844;
+        --accent: #9b6b2f;
+        --accent-strong: #7a4d17;
+        --danger: #b53328;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(255, 240, 214, 0.9), transparent 35%),
+          linear-gradient(180deg, #ead8bc, #f8f2e8);
+      }
+
+      .page {
+        width: min(1080px, 100%);
+        margin: 0 auto;
+        padding: 24px;
+      }
+
+      .hero {
+        margin-bottom: 18px;
+      }
+
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: 2rem;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        box-shadow: 0 18px 40px rgba(76, 49, 19, 0.08);
+        padding: 18px;
+      }
+
+      .card h2 {
+        margin: 0 0 14px;
+        font-size: 1.1rem;
+      }
+
+      .form-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field label {
+        font-size: 0.88rem;
+        font-weight: 700;
+      }
+
+      .field small {
+        color: var(--muted);
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #ccb189;
+        border-radius: 10px;
+        background: #fffdf8;
+        color: var(--text);
+      }
+
+      textarea {
+        min-height: 108px;
+        resize: vertical;
+      }
+
+      .inline {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
+
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 11px 16px;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .primary {
+        background: linear-gradient(180deg, #b37a36, #8b5a20);
+        color: white;
+      }
+
+      .secondary {
+        background: #efe2ce;
+        color: var(--text);
+        border: 1px solid #ccb189;
+      }
+
+      .danger {
+        background: #fbe1dd;
+        color: var(--danger);
+        border: 1px solid #ebb0a8;
+      }
+
+      .preview {
+        display: grid;
+        gap: 12px;
+        min-width: 0;
+      }
+
+      .status {
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #f2e8d7;
+        color: var(--text);
+        min-height: 44px;
+      }
+
+      .avatar-preview {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 10px 12px;
+        border-radius: 10px;
+        background: #f7efe2;
+      }
+
+      .avatar-badge {
+        min-width: 58px;
+        height: 58px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: #ebd7b4;
+        color: #6b491e;
+        font-weight: 800;
+      }
+
+      pre {
+        margin: 0;
+        padding: 14px;
+        border-radius: 12px;
+        background: #1f1b16;
+        color: #efe2cf;
+        overflow: auto;
+        max-width: 100%;
+        max-height: 260px;
+        font-size: 0.84rem;
+        line-height: 1.45;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .json-block {
+        min-width: 0;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          min-width: 0;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .page {
+          padding: 14px;
+        }
+
+        .hero h1 {
+          font-size: 1.5rem;
+        }
+
+        .inline {
+          grid-template-columns: 1fr;
+        }
+
+        .buttons {
+          flex-direction: column;
+        }
+
+        button {
+          width: 100%;
+        }
+
+        pre {
+          max-height: 220px;
+          font-size: 0.78rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <h1>Endless Exploration Flow Test</h1>
+        <p>
+          This launcher sends a real <code>/auth/transfer</code> request to the HG World backend,
+          receives the launch token, and redirects through the HG World frontend token entry flow.
+        </p>
+      </header>
+
+      <section class="grid">
+        <form id="launch-form" class="card form-grid">
+          <h2>Launch Config</h2>
+
+          <div class="field">
+            <label for="backendUrl">HG World Backend URL</label>
+            <input id="backendUrl" name="backendUrl" value="https://treasuresocket.hamochi.education" />
+          </div>
+
+          <div class="field">
+            <label for="frontendUrl">HG World Frontend URL</label>
+            <input id="frontendUrl" name="frontendUrl" value="https://treasure.hamochi.education" />
+          </div>
+
+          <div class="inline">
+            <div class="field">
+              <label for="locale">Locale</label>
+              <select id="locale" name="locale">
+                <option value="en">en</option>
+                <option value="ms">ms</option>
+                <option value="zh">zh</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="gameId">Game ID</label>
+              <select id="gameId" name="gameId">
+                <option value="ENDLESS_EXPLORATION">ENDLESS_EXPLORATION</option>
+                <option value="ENDLESS_EXPLORATION_TUTORIAL">ENDLESS_EXPLORATION_TUTORIAL</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="inline">
+            <div class="field">
+              <label for="playerId">Player ID</label>
+              <input id="playerId" name="playerId" value="player-001" />
+            </div>
+
+            <div class="field">
+              <label for="playerName">Player Name</label>
+              <input id="playerName" name="playerName" value="Test Player" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="characterKey">Character</label>
+            <select id="characterKey" name="characterKey"></select>
+            <small>Uses the avatar payloads copied from <code>character.ts</code>.</small>
+          </div>
+
+          <div id="avatar-preview" class="avatar-preview"></div>
+
+          <div class="inline">
+            <div class="field">
+              <label for="levelId">Level</label>
+              <select id="levelId" name="levelId"></select>
+            </div>
+
+            <div class="field">
+              <label for="difficulty">Difficulty</label>
+              <select id="difficulty" name="difficulty">
+                <option value="1">1 - Easy</option>
+                <option value="2" selected>2 - Medium</option>
+                <option value="3">3 - Hard</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="inline">
+            <div class="field">
+              <label for="mapId">Map ID</label>
+              <input id="mapId" name="mapId" value="1" />
+            </div>
+
+            <div class="field">
+              <label for="questionKey">Question Key</label>
+              <input id="questionKey" name="questionKey" value="s010_c020_q040" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="returnUrl">Return URL</label>
+            <input id="returnUrl" name="returnUrl" value="http://localhost:5500/result.html" />
+          </div>
+
+          <div class="buttons">
+            <button type="submit" class="primary">Launch Game</button>
+            <button type="button" id="preview-btn" class="secondary">Preview Payload</button>
+            <button type="button" id="copy-url-btn" class="secondary">Copy Redirect URL</button>
+            <button type="button" id="reset-btn" class="danger">Reset Saved Form</button>
+          </div>
+        </form>
+
+        <section class="card preview">
+          <h2>Request / Response</h2>
+          <div id="status" class="status">Idle.</div>
+
+          <div class="json-block">
+            <div class="muted">Transfer Request Body</div>
+            <pre id="request-preview">{}</pre>
+          </div>
+
+          <div class="json-block">
+            <div class="muted">Transfer Response</div>
+            <pre id="response-preview">{}</pre>
+          </div>
+
+          <div class="json-block">
+            <div class="muted">Final Redirect URL</div>
+            <pre id="redirect-preview"></pre>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script type="module" src="./test-endless-exploration.js"></script>
+  </body>
+</html>
