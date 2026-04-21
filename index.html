@@ -717,9 +717,10 @@
           if (selectedLevel == null) {
             return;
           }
+          const level = selectedLevel;
           const difficulty = button.getAttribute("data-difficulty");
           closeDifficultyDialog();
-          launchLevel(selectedLevel, difficulty);
+          launchLevel(level, difficulty);
         });
       });
 
