@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Endless Exploration Launcher</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #e8d5b7;
+        --panel: rgba(255, 250, 240, 0.94);
+        --panel-strong: #fff8ec;
+        --line: #cfb183;
+        --line-strong: #bb955a;
+        --text: #573a1f;
+        --muted: #7a5a38;
+        --accent: #bd8744;
+        --accent-strong: #8b5a20;
+        --danger: #b53328;
+        --shadow: rgba(89, 56, 20, 0.16);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top, rgba(255, 246, 221, 0.5), transparent 38%),
+          linear-gradient(180deg, rgba(118, 77, 36, 0.2), rgba(49, 30, 13, 0.16)),
+          var(--bg);
+      }
+
+      .page {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        padding: 32px 18px 40px;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 22px;
+      }
+
+      .hero__eyebrow {
+        margin: 0 0 8px;
+        color: #916b3e;
+        font-size: 0.86rem;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+      }
+
+      .hero__title {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 2.8rem);
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .hero__text {
+        width: min(720px, 100%);
+        margin: 10px auto 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .shell {
+        display: grid;
+        gap: 18px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 3px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 16px 28px var(--shadow);
+      }
+
+      .player-card {
+        display: block;
+        padding: 18px;
+      }
+
+      .avatar-preview {
+        display: grid;
+        place-items: center;
+        width: 120px;
+        height: 120px;
+        border-radius: 22px;
+        background: linear-gradient(180deg, #f8ebd6, #ead2af);
+        border: 2px solid #d4b07a;
+        color: #6d4c2e;
+        font-size: 1rem;
+        font-weight: 900;
+        text-align: center;
+        padding: 8px;
+      }
+
+      .player-fields {
+        display: grid;
+        gap: 12px;
+        width: min(520px, 100%);
+      }
+
+      .field-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field--wide {
+        grid-column: 1 / -1;
+      }
+
+      label {
+        font-size: 0.82rem;
+        font-weight: 800;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px 12px;
+        border: 2px solid #d2b487;
+        border-radius: 12px;
+        background: #fffdf8;
+        color: var(--text);
+      }
+
+      input[readonly] {
+        background: #f4ead9;
+        color: #7c684c;
+      }
+
+      .status {
+        display: none;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 2px solid #d7b27b;
+        background: #fff5e1;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .status.is-visible {
+        display: block;
+      }
+
+      .status.is-error {
+        border-color: #e4a49e;
+        background: #fff0ee;
+        color: var(--danger);
+      }
+
+      .levels-card {
+        padding: 20px 18px 18px;
+      }
+
+      .levels-card__head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .levels-card__title {
+        margin: 0;
+        font-size: 1.35rem;
+        font-weight: 900;
+      }
+
+      .levels-card__text {
+        margin: 6px 0 0;
+        color: var(--muted);
+      }
+
+      .levels-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+      }
+
+      .level-card {
+        display: grid;
+        gap: 14px;
+        justify-items: center;
+        padding: 18px 16px 16px;
+        border: 4px solid var(--line);
+        border-radius: 10px;
+        background:
+          linear-gradient(180deg, rgba(255, 253, 247, 0.98), rgba(249, 240, 223, 0.95));
+        box-shadow:
+          0 10px 20px rgba(89, 56, 20, 0.12),
+          inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        cursor: pointer;
+        transition:
+          transform 140ms ease,
+          box-shadow 140ms ease,
+          border-color 140ms ease;
+      }
+
+      .level-card:hover,
+      .level-card:focus-visible {
+        outline: none;
+        border-color: var(--line-strong);
+        box-shadow:
+          0 14px 28px rgba(89, 56, 20, 0.18),
+          inset 0 1px 0 rgba(255, 255, 255, 0.92);
+        transform: translateY(-2px);
+      }
+
+      .level-card__label {
+        color: #6b4c2c;
+        font-size: 1.45rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+      }
+
+      .level-card__badge {
+        display: grid;
+        place-items: center;
+        width: 92px;
+        height: 92px;
+        border-radius: 24px;
+        background: radial-gradient(circle at top, #f5e2be, #dfc08f);
+        color: #8f682f;
+        font-size: 2rem;
+        font-weight: 900;
+      }
+
+      .level-card__stars {
+        display: flex;
+        gap: 6px;
+        color: #f4b300;
+        letter-spacing: 0.08em;
+      }
+
+      .go-button {
+        width: 100%;
+        padding: 11px 14px;
+        border: 0;
+        border-radius: 8px;
+        background: linear-gradient(180deg, #d9b36a, #bd8744);
+        color: #fff8ec;
+        font-size: 1.45rem;
+        font-weight: 900;
+        line-height: 1;
+        box-shadow:
+          0 8px 14px rgba(115, 75, 24, 0.22),
+          inset 0 1px 0 rgba(255, 247, 224, 0.34);
+        cursor: pointer;
+      }
+
+      .dialog {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(18, 10, 4, 0.55);
+      }
+
+      .dialog.is-open {
+        display: flex;
+      }
+
+      .dialog__card {
+        width: min(420px, 100%);
+        padding: 22px;
+        border-radius: 20px;
+        border: 3px solid var(--line);
+        background: linear-gradient(180deg, #fffaf0, #f2e2c1);
+        box-shadow: 0 24px 40px rgba(33, 19, 7, 0.28);
+      }
+
+      .dialog__title {
+        margin: 0;
+        font-size: 1.35rem;
+        font-weight: 900;
+      }
+
+      .dialog__text {
+        margin: 8px 0 16px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .difficulty-options {
+        display: grid;
+        gap: 10px;
+      }
+
+      .difficulty-option {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 2px solid #caa26b;
+        border-radius: 14px;
+        background: rgba(255, 249, 237, 0.92);
+        color: var(--text);
+        text-align: left;
+        cursor: pointer;
+        transition:
+          transform 120ms ease,
+          border-color 120ms ease,
+          background 120ms ease;
+      }
+
+      .difficulty-option:hover {
+        transform: translateY(-1px);
+        border-color: #b48342;
+        background: #fff4dc;
+      }
+
+      .difficulty-option strong {
+        font-size: 1rem;
+      }
+
+      .difficulty-option span {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      .dialog__actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 14px;
+      }
+
+      .ghost-button {
+        padding: 10px 16px;
+        border: 0;
+        border-radius: 999px;
+        background: #ead6b8;
+        color: var(--text);
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      @media (max-width: 760px) {
+        .page {
+          padding: 18px 14px 28px;
+        }
+
+        .player-card {
+          grid-template-columns: 1fr;
+          justify-items: center;
+        }
+
+        .player-fields,
+        .field-row {
+          width: 100%;
+        }
+
+        .field-row {
+          grid-template-columns: 1fr;
+        }
+
+        .levels-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 14px;
+        }
+
+        .level-card {
+          padding: 14px 12px;
+        }
+
+        .level-card__label {
+          font-size: 1.2rem;
+        }
+
+        .level-card__badge {
+          width: 78px;
+          height: 78px;
+          font-size: 1.7rem;
+        }
+
+        .go-button {
+          font-size: 1.2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero">
+        <p class="hero__eyebrow">Endless Exploration</p>
+        <h1 class="hero__title">Choose a Level</h1>
+        <p class="hero__text">
+          Minimal test launcher for the real Endless Exploration entry flow.
+          Pick an avatar, keep or change the generated player name, then choose a level and difficulty.
+        </p>
+      </header>
+
+      <section class="shell">
+        <div id="status" class="status"></div>
+
+        <section class="card player-card">
+          <!--
+          <div id="avatarPreview" class="avatar-preview">Avatar</div>
+          -->
+
+          <div class="player-fields">
+            <div class="field-row">
+              <!--
+              <div class="field">
+                <label for="playerId">Player ID</label>
+                <input id="playerId" type="text" readonly />
+              </div>
+              -->
+
+              <div class="field">
+                <label for="playerName">Player Name</label>
+                <input id="playerName" type="text" />
+              </div>
+
+              <div class="field">
+                <label for="characterKey">Avatar</label>
+                <select id="characterKey"></select>
+              </div>
+            </div>
+
+            <!--
+            <div class="field field--wide">
+              <label for="avatarPayload">Avatar Payload</label>
+              <input id="avatarPayload" type="text" readonly />
+            </div>
+            -->
+          </div>
+
+          <input id="playerId" type="hidden" />
+          <input id="avatarPayload" type="hidden" />
+          <div id="avatarPreview" hidden>Avatar</div>
+        </section>
+
+        <section class="card levels-card">
+          <div class="levels-card__head">
+            <div>
+              <h2 class="levels-card__title">Levels</h2>
+              <p class="levels-card__text">Select a level to choose difficulty and launch.</p>
+            </div>
+          </div>
+
+          <div id="levelsGrid" class="levels-grid"></div>
+        </section>
+      </section>
+    </main>
+
+    <div id="difficultyDialog" class="dialog" aria-hidden="true">
+      <div class="dialog__card" role="dialog" aria-modal="true" aria-labelledby="difficultyTitle">
+        <h2 id="difficultyTitle" class="dialog__title">Choose Difficulty</h2>
+        <p class="dialog__text">Select how challenging you want this run to be.</p>
+
+        <div class="difficulty-options">
+          <button class="difficulty-option" type="button" data-difficulty="1">
+            <strong>Easy</strong>
+            <span>Respawn at the starting point when HP runs out.</span>
+          </button>
+          <button class="difficulty-option" type="button" data-difficulty="2">
+            <strong>Medium</strong>
+            <span>Standard rules with normal damage.</span>
+          </button>
+          <button class="difficulty-option" type="button" data-difficulty="3">
+            <strong>Hard</strong>
+            <span>One hit will knock the player out.</span>
+          </button>
+        </div>
+
+        <div class="dialog__actions">
+          <button id="cancelDialogButton" class="ghost-button" type="button">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const BACKEND_URL = "https://treasuresocket.hamochi.education";
+      const FRONTEND_URL = "https://treasure.hamochi.education";
+      const LOCALE = "en";
+      const GAME_ID = "ENDLESS_EXPLORATION";
+      const QUESTION_KEY = "s010_c020_q040";
+      const CHARACTERS = [
+        {
+          key: "katy",
+          label: "Katy",
+          avatar: '{"charKey":"mochi_v4","body":"cat","mouth":"cat","pColor":"FCE83F","hat":"","left":"","right":"","back":""}'
+        },
+        {
+          key: "beary",
+          label: "Beary",
+          avatar: '{"charKey":"mochi_v4","body":"bear","mouth":"bear","pColor":"C67334","hat":"","left":"","right":"","back":""}'
+        },
+        {
+          key: "ruby",
+          label: "Ruby",
+          avatar: '{"charKey":"mochi_v4","body":"rabbit","mouth":"rabbit","pColor":"FFFFFF","hat":"S0280_H","left":"","right":"","back":""}'
+        },
+        {
+          key: "hamochi",
+          label: "Hamochi",
+          avatar: '{"charKey":"mochi_v4","body":"hamster","mouth":"hamster","pColor":"EEC883","hat":"S0010_H","left":"","right":"","back":""}'
+        },
+        {
+          key: "explorer",
+          label: "Explorer",
+          avatar: '{"charKey":"mochi_v4","body":"hamster","mouth":"hamster","pColor":"EEC883","hat":"S0050_H","left":"S0050_L","right":"","back":"S0030_B"}'
+        },
+        {
+          key: "witch",
+          label: "Witch Katy",
+          avatar: '{"charKey":"mochi_v4","body":"cat","mouth":"cat","pColor":"FCE83F","hat":"S0120_H","left":"S0120_L","right":"S0120_R","back":""}'
+        },
+        {
+          key: "warrior",
+          label: "Warrior Beary",
+          avatar: '{"charKey":"mochi_v4","body":"bear","mouth":"bear","pColor":"C67334","hat":"S0280_H","left":"S0400_L","right":"S0400_R","back":""}'
+        },
+        {
+          key: "hunter",
+          label: "Hunter Ruby",
+          avatar: '{"charKey":"mochi_v4","body":"rabbit","mouth":"rabbit","pColor":"FFFFFF","hat":"S0280_H","left":"S0260_L","right":"S0050_R","back":"S0260_B"}'
+        }
+      ];
+
+      const playerIdInput = document.getElementById("playerId");
+      const playerNameInput = document.getElementById("playerName");
+      const characterKeySelect = document.getElementById("characterKey");
+      const avatarPayloadInput = document.getElementById("avatarPayload");
+      const avatarPreview = document.getElementById("avatarPreview");
+      const levelsGrid = document.getElementById("levelsGrid");
+      const difficultyDialog = document.getElementById("difficultyDialog");
+      const cancelDialogButton = document.getElementById("cancelDialogButton");
+      const statusBox = document.getElementById("status");
+
+      let selectedLevel = null;
+      let launching = false;
+
+      const createPlayerId = () => {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+          return window.crypto.randomUUID();
+        }
+        const random = Math.random().toString(36).slice(2, 10);
+        return "player-" + random;
+      };
+
+      const createPlayerName = () => {
+        const value = Math.random().toString(36).slice(2, 6).toUpperCase();
+        return "Explorer-" + value;
+      };
+
+      const getReturnUrl = () => {
+        const current = new URL(window.location.href);
+        current.pathname = current.pathname.replace(/[^/]*$/, "result.html");
+        current.search = "";
+        current.hash = "";
+        return current.toString();
+      };
+
+      const setStatus = (message, isError = false) => {
+        statusBox.textContent = message;
+        statusBox.classList.add("is-visible");
+        statusBox.classList.toggle("is-error", isError);
+      };
+
+      const clearStatus = () => {
+        statusBox.textContent = "";
+        statusBox.classList.remove("is-visible", "is-error");
+      };
+
+      const getSelectedCharacter = () =>
+        CHARACTERS.find((character) => character.key === characterKeySelect.value) ?? CHARACTERS[0];
+
+      const updateAvatarPreview = () => {
+        const character = getSelectedCharacter();
+        avatarPayloadInput.value = character.avatar;
+        avatarPreview.textContent = character.label;
+      };
+
+      const buildTransferBody = (level, difficulty) => {
+        const character = getSelectedCharacter();
+        return {
+          auth: {
+            Player: {
+              mochiId: playerIdInput.value.trim(),
+              avatar: character.avatar
+            },
+            User: {
+              name: playerNameInput.value.trim()
+            }
+          },
+          gameId: GAME_ID,
+          levelId: String(level),
+          mapId: String(level),
+          difficulty: String(difficulty),
+          questionKey: QUESTION_KEY,
+          returnUrl: getReturnUrl()
+        };
+      };
+
+      const launchLevel = async (level, difficulty) => {
+        if (launching) {
+          return;
+        }
+
+        const playerName = playerNameInput.value.trim();
+        if (!playerName) {
+          setStatus("Player name is required.", true);
+          return;
+        }
+
+        launching = true;
+        setStatus(`Launching level ${level} on difficulty ${difficulty}...`);
+
+        try {
+          const payload = buildTransferBody(level, difficulty);
+          const response = await fetch(`${BACKEND_URL}/auth/transfer`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok || !data || data.success !== true || !data.token) {
+            const message = data && data.error ? data.error : "Launch request failed.";
+            throw new Error(message);
+          }
+
+          const redirectUrl = `${FRONTEND_URL.replace(/\/$/, "")}/${LOCALE}?token=${encodeURIComponent(data.token)}`;
+          window.location.href = redirectUrl;
+        } catch (error) {
+          setStatus(error instanceof Error ? error.message : "Launch request failed.", true);
+          launching = false;
+        }
+      };
+
+      const openDifficultyDialog = (level) => {
+        selectedLevel = level;
+        difficultyDialog.classList.add("is-open");
+        difficultyDialog.setAttribute("aria-hidden", "false");
+      };
+
+      const closeDifficultyDialog = () => {
+        selectedLevel = null;
+        difficultyDialog.classList.remove("is-open");
+        difficultyDialog.setAttribute("aria-hidden", "true");
+      };
+
+      const renderLevels = () => {
+        const fragment = document.createDocumentFragment();
+        for (let level = 1; level <= 15; level += 1) {
+          const card = document.createElement("button");
+          card.type = "button";
+          card.className = "level-card";
+          card.innerHTML = `
+            <div class="level-card__label">Level - ${level}</div>
+            <div class="level-card__badge">${level}</div>
+            <div class="level-card__stars">☆ ☆ ☆</div>
+            <div class="go-button">GO</div>
+          `;
+          card.addEventListener("click", () => openDifficultyDialog(level));
+          fragment.appendChild(card);
+        }
+        levelsGrid.appendChild(fragment);
+      };
+
+      const renderCharacters = () => {
+        const fragment = document.createDocumentFragment();
+        CHARACTERS.forEach((character) => {
+          const option = document.createElement("option");
+          option.value = character.key;
+          option.textContent = character.label;
+          fragment.appendChild(option);
+        });
+        characterKeySelect.appendChild(fragment);
+      };
+
+      renderCharacters();
+      renderLevels();
+
+      playerIdInput.value = createPlayerId();
+      playerNameInput.value = createPlayerName();
+      characterKeySelect.value = CHARACTERS[0].key;
+      updateAvatarPreview();
+
+      characterKeySelect.addEventListener("change", updateAvatarPreview);
+      cancelDialogButton.addEventListener("click", closeDifficultyDialog);
+      difficultyDialog.addEventListener("click", (event) => {
+        if (event.target === difficultyDialog) {
+          closeDifficultyDialog();
+        }
+      });
+
+      difficultyDialog.querySelectorAll("[data-difficulty]").forEach((button) => {
+        button.addEventListener("click", () => {
+          if (selectedLevel == null) {
+            return;
+          }
+          const difficulty = button.getAttribute("data-difficulty");
+          closeDifficultyDialog();
+          launchLevel(selectedLevel, difficulty);
+        });
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          closeDifficultyDialog();
+        }
+      });
+
+      clearStatus();
+    </script>
+  </body>
+</html>
