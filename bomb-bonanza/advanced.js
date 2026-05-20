@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'hg-testing:endless-exploration-launcher'
+const STORAGE_KEY = 'hg-testing:bomb-bonanza-launcher'
 
 const characterData = [
   {
@@ -98,6 +98,8 @@ const els = {
   difficulty: $('difficulty'),
   mapId: $('mapId'),
   questionKey: $('questionKey'),
+  collectionName: $('collectionName'),
+  collectionImage: $('collectionImage'),
   returnUrl: $('returnUrl'),
   status: $('status'),
   requestPreview: $('request-preview'),
@@ -131,6 +133,8 @@ const persistForm = () => {
     difficulty: els.difficulty.value,
     mapId: els.mapId.value,
     questionKey: els.questionKey.value,
+    collectionName: els.collectionName.value,
+    collectionImage: els.collectionImage.value,
     returnUrl: els.returnUrl.value,
   }
   localStorage.setItem(STORAGE_KEY, JSON.stringify(payload))
@@ -172,7 +176,7 @@ const populateLevels = () => {
 }
 
 const updateTutorialDefaults = () => {
-  const isTutorial = els.gameId.value === 'ENDLESS_EXPLORATION_TUTORIAL'
+  const isTutorial = els.gameId.value === 'BOMB_BONANZA_TUTORIAL'
   els.levelId.disabled = isTutorial
   els.difficulty.disabled = false
   if (isTutorial) {
@@ -205,6 +209,8 @@ const updateAvatarPreview = () => {
 const buildTransferBody = () => {
   const character = getCharacter(els.characterKey.value)
   const levelId = els.levelId.value
+  const collectionName = els.collectionName.value.trim()
+  const collectionImage = els.collectionImage.value.trim()
   return {
     auth: {
       Player: {
@@ -220,6 +226,10 @@ const buildTransferBody = () => {
     mapId: els.mapId.value.trim() || levelId,
     difficulty: els.difficulty.value,
     questionKey: els.questionKey.value.trim(),
+    collectionData: {
+      collectionName,
+      collectionImage,
+    },
     returnUrl: els.returnUrl.value.trim(),
   }
 }
@@ -343,7 +353,7 @@ els.characterKey.addEventListener('change', () => {
   refreshPreview()
 })
 els.levelId.addEventListener('change', () => {
-  if (els.gameId.value !== 'ENDLESS_EXPLORATION_TUTORIAL') {
+  if (els.gameId.value !== 'BOMB_BONANZA_TUTORIAL') {
     els.mapId.value = els.levelId.value
   }
   persistForm()
@@ -364,6 +374,8 @@ els.gameId.addEventListener('change', () => {
   els.difficulty,
   els.mapId,
   els.questionKey,
+  els.collectionName,
+  els.collectionImage,
   els.returnUrl,
 ].forEach((input) => {
   input.addEventListener('input', () => {

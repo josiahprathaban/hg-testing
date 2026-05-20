@@ -262,12 +262,12 @@
 
           <div class="field">
             <label for="backendUrl">HG World Backend URL</label>
-            <input id="backendUrl" name="backendUrl" value="https://treasuresocket.hamochi.education" />
+            <input id="backendUrl" name="backendUrl" value="http://localhost:3000" />
           </div>
 
           <div class="field">
             <label for="frontendUrl">HG World Frontend URL</label>
-            <input id="frontendUrl" name="frontendUrl" value="https://treasure.hamochi.education" />
+            <input id="frontendUrl" name="frontendUrl" value="http://localhost:5173" />
           </div>
 
           <div class="inline">
@@ -338,8 +338,24 @@
           </div>
 
           <div class="field">
+            <label for="collectionName">Collection Name</label>
+            <input id="collectionName" name="collectionName" value="Test Cyclops" />
+            <small>Sent as <code>collectionData.collectionName</code> for the Endless gold chest reward.</small>
+          </div>
+
+          <div class="field">
+            <label for="collectionImage">Collection Image URL</label>
+            <input
+              id="collectionImage"
+              name="collectionImage"
+              value="https://placehold.co/256x256/7a4d17/fffaf1.png?text=Test+Collection"
+            />
+            <small>Sent as <code>collectionData.collectionImage</code>. Leave blank to test local fallback.</small>
+          </div>
+
+          <div class="field">
             <label for="returnUrl">Return URL</label>
-            <input id="returnUrl" name="returnUrl" value="https://josiahprathaban.github.io/hg-testing/result.html" />
+            <input id="returnUrl" name="returnUrl" value="http://127.0.0.1:5500/result.html" />
           </div>
 
           <div class="buttons">
@@ -372,6 +388,6 @@
       </section>
     </main>
 
-    <script type="module" src="./test-endless-exploration.js"></script>
+    <script type="module" src="./advanced.js"></script>
   </body>
 </html>

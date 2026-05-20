@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'hg-testing:endless-exploration-launcher'
+const STORAGE_KEY = 'hg-testing:bomb-bonanza-launcher'
 
 const $ = (id) => document.getElementById(id)
 
@@ -15,7 +15,7 @@ const els = {
   levelId: $('levelId'),
   roomId: $('roomId'),
   totalScore: $('totalScore'),
-  bossCollected: $('bossCollected'),
+  collectionCollected: $('collectionCollected'),
 }
 
 let lastResponseText = '{}'
@@ -58,8 +58,8 @@ const updateSummary = (payload) => {
   els.levelId.textContent = game.levelId || '-'
   els.roomId.textContent = game.roomId || '-'
   els.totalScore.textContent = Number.isFinite(score.total) ? String(score.total) : '-'
-  els.bossCollected.textContent =
-    typeof score.isBossCollected === 'boolean' ? String(score.isBossCollected) : '-'
+  els.collectionCollected.textContent =
+    typeof score.collectionCollected === 'boolean' ? String(score.collectionCollected) : '-'
 }
 
 const renderResponse = (payload) => {
@@ -99,7 +99,7 @@ const copyRawJson = async () => {
 }
 
 const goBack = () => {
-  window.location.href = './test-endless-exploration.html'
+  window.location.href = './index.html'
 }
 
 const handleError = (error) => {
