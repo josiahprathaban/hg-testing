@@ -283,6 +283,7 @@
         <h1 class="hero__title">Choose a Level</h1>
         <p class="hero__text">Simple launcher for the shooting test build.</p>
         <div class="hero__actions">
+          <a id="openTestRoomLink" class="nav-link" href="#">Open Test Room</a>
           <a class="nav-link nav-link--ghost" href="../index.html">Back To Game Select</a>
         </div>
       </header>
@@ -351,6 +352,7 @@
       const BACKEND_URL = 'https://treasuresocket.hamochi.education'
       const FRONTEND_URL = 'http://treasure.hamochi.education/'
       const LOCALE = 'en'
+      const TEST_ROOM_PATH = '/en/island-exploration-v3/test-room'
       const GAME_ID = 'ISLAND_EXPLORATION_V3'
       const QUESTION_KEY = 's010_c020_q040'
       const CHARACTERS = [
@@ -371,6 +373,7 @@
       const difficultyDialog = document.getElementById('difficultyDialog')
       const cancelDialogButton = document.getElementById('cancelDialogButton')
       const statusBox = document.getElementById('status')
+      const openTestRoomLink = document.getElementById('openTestRoomLink')
 
       let selectedLevel = null
       let launching = false
@@ -405,6 +408,8 @@
         statusBox.textContent = ''
         statusBox.classList.remove('is-visible', 'is-error')
       }
+
+      const getTestRoomUrl = () => `${FRONTEND_URL.replace(/\/$/, '')}${TEST_ROOM_PATH}`
 
       const persistState = () => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify({
@@ -509,7 +514,7 @@
       const renderLevels = () => {
         const fragment = document.createDocumentFragment()
 
-        for (let level = 1; level <= 2; level += 1) {
+        for (let level = 1; level <= 4; level += 1) {
           const card = document.createElement('button')
           card.type = 'button'
           card.className = 'level-card'
@@ -532,6 +537,7 @@
       playerNameInput.value = createPlayerName()
       characterKeySelect.value = CHARACTERS[0].key
       restoreState()
+      openTestRoomLink.href = getTestRoomUrl()
 
       playerNameInput.addEventListener('input', persistState)
       characterKeySelect.addEventListener('change', persistState)

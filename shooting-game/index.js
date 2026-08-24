@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'hg-testing:shooting-game-launcher'
+const TEST_ROOM_URL = 'http://treasure.hamochi.education/en/island-exploration-v3/test-room'
 
 const characterData = [
   {
@@ -109,6 +110,7 @@ const els = {
   previewBtn: $('preview-btn'),
   copyUrlBtn: $('copy-url-btn'),
   resetBtn: $('reset-btn'),
+  openTestRoomLink: $('openTestRoomLink'),
 }
 
 const safeJson = (value) => JSON.stringify(value, null, 2)
@@ -321,6 +323,12 @@ const resetSavedForm = () => {
   window.location.reload()
 }
 
+const wireTestRoomLink = () => {
+  if (els.openTestRoomLink) {
+    els.openTestRoomLink.href = TEST_ROOM_URL
+  }
+}
+
 const handleError = (error) => {
   console.error(error)
   setStatus(error instanceof Error ? error.message : String(error), true)
@@ -329,6 +337,7 @@ const handleError = (error) => {
 populateCharacters()
 populateLevels()
 restoreForm()
+wireTestRoomLink()
 if (!els.characterKey.value) {
   els.characterKey.value = characterData[0].key
 }
