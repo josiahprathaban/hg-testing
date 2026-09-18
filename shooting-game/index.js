@@ -1,5 +1,5 @@
 const STORAGE_KEY = 'hg-testing:shooting-game-launcher'
-const TEST_ROOM_URL = 'http://treasure.hamochi.education/en/island-exploration-v3/test-room'
+const TEST_ROOM_URL = 'http://localhost:5173/en/island-exploration-v3/test-room'
 
 const characterData = [
   {
