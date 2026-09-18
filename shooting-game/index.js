@@ -1,5 +1,11 @@
 const STORAGE_KEY = 'hg-testing:shooting-game-launcher'
 const TEST_ROOM_URL = 'http://treasure.hamochi.education/en/island-exploration-v3/test-room'
+const LEVEL_DETAILS = [
+  '4 rooms - Shield Boss',
+  '4 rooms - No boss',
+  '5 rooms - Shield Boss',
+  '5 rooms - No boss',
+]
 
 const characterData = [
   {
@@ -169,10 +175,10 @@ const populateCharacters = () => {
 }
 
 const populateLevels = () => {
-  for (let level = 1; level <= 2; level += 1) {
+  for (let level = 1; level <= 4; level += 1) {
     const option = document.createElement('option')
     option.value = String(level)
-    option.textContent = `Level ${level}`
+    option.textContent = `Level ${level}: ${LEVEL_DETAILS[level - 1]}`
     els.levelId.appendChild(option)
   }
 }

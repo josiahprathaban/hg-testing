@@ -186,6 +186,30 @@
         color: #f4b300;
         letter-spacing: 0.08em;
       }
+      .level-card__meta {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+      .level-card__meta span {
+        border: 1px solid #d2ad75;
+        border-radius: 999px;
+        background: #fff5df;
+        color: #775126;
+        font-size: 0.72rem;
+        font-weight: 800;
+        line-height: 1;
+        padding: 5px 8px;
+      }
+      .level-card__description {
+        min-height: 3.8em;
+        margin: -4px 0 0;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.35;
+        text-align: center;
+      }
       .go-button, .nav-link {
         width: 100%;
         padding: 11px 14px;
@@ -513,8 +537,31 @@
 
       const renderLevels = () => {
         const fragment = document.createDocumentFragment()
+        const levelDetails = [
+          {
+            rooms: '4 rooms',
+            encounter: 'Shield Boss',
+            description: 'Test basic enemies, a heavy and jumper wave, then the final boss fight.'
+          },
+          {
+            rooms: '4 rooms',
+            encounter: 'No boss',
+            description: 'Test ranged, stationary, heavy, jumper, sniper, and charger enemy waves.'
+          },
+          {
+            rooms: '5 rooms',
+            encounter: 'Shield Boss',
+            description: 'Full boss test with five rooms, mixed enemy waves, gem drops, and the final boss.'
+          },
+          {
+            rooms: '5 rooms',
+            encounter: 'No boss',
+            description: 'Five-room mixed-wave test without a boss encounter.'
+          }
+        ]
 
         for (let level = 1; level <= 4; level += 1) {
+          const details = levelDetails[level - 1]
           const card = document.createElement('button')
           card.type = 'button'
           card.className = 'level-card'
@@ -522,6 +569,8 @@
             <div class="level-card__label">Level ${level}</div>
             <div class="level-card__badge">${level}</div>
             <div class="level-card__stars">☆☆☆</div>
+            <div class="level-card__meta"><span>${details.rooms}</span><span>${details.encounter}</span></div>
+            <p class="level-card__description">${details.description}</p>
             <div class="go-button">GO</div>
           `
           card.addEventListener('click', () => openDifficultyDialog(level))
