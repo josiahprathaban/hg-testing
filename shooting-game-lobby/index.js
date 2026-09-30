@@ -1,6 +1,6 @@
 const STORAGE_KEY = 'hg-testing:shooting-game-lobby-launcher'
 const BACKEND_URL = 'https://treasuresocket.hamochi.education'
-const FRONTEND_URL = 'http://treasure.hamochi.education/'
+const FRONTEND_URL = 'http://treasure.hamochi.education'
 const GAME_ID = 'ISLAND_EXPLORATION_V3_LOBBY'
 const QUESTION_KEY = 's010_c020_q040'
 
