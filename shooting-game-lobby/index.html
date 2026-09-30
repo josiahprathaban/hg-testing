@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shooting Game Lobby Launcher</title>
+    <style>
+      :root { --ink:#234750; --panel:#fff9e9; --line:#47736d; --accent:#db922d; --muted:#6f715c; }
+      * { box-sizing:border-box; } body { margin:0; min-height:100vh; color:var(--ink); font-family:"Trebuchet MS",sans-serif; background:radial-gradient(circle at 50% 105%,#78ad71 0 21%,transparent 22%),linear-gradient(#55c5ed 0%,#c9f0ed 55%,#84bf80 56%,#41755b 100%); }
+      .page { width:min(760px,100%); margin:0 auto; padding:52px 20px; } .hero { color:#fffdf5; text-align:center; text-shadow:0 2px rgba(24,72,83,.3); }.hero p { margin:0; font-size:.75rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }.hero h1 { margin:8px 0 0; font-family:Georgia,serif; font-size:clamp(2rem,5vw,3.2rem); line-height:.95; }.hero span { display:block; margin:14px auto 0; max-width:540px; font-size:.92rem; line-height:1.45; }
+      .card { margin-top:27px; padding:28px; border:3px solid var(--line); border-radius:22px; background:linear-gradient(145deg,rgba(255,252,239,.97),rgba(225,238,214,.94)); box-shadow:0 18px 30px rgba(21,60,51,.25),inset 0 1px #fff; }.card h2 { margin:0; font-family:Georgia,serif; font-size:1.5rem; }.card>p { margin:8px 0 21px; color:var(--muted); line-height:1.45; }.form { display:grid; gap:16px; }.field { display:grid; gap:7px; }.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; } label { color:#705d3b; font-size:.73rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; } input,select { width:100%; min-height:45px; padding:10px 12px; border:2px solid #c6ad75; border-radius:11px; background:#fffdf4; color:#294d54; font:inherit; }.avatar-preview { display:flex; gap:12px; align-items:center; padding:12px; border:1px solid #cbb17c; border-radius:12px; background:rgba(255,255,255,.5); }.avatar-preview__badge { display:grid; width:47px; height:47px; place-items:center; border:3px solid #315763; border-radius:15px; background:#70bdd2; color:#fffdf2; font-family:Georgia,serif; font-weight:900; }.avatar-preview strong { display:block; }.avatar-preview span { color:var(--muted); font-size:.78rem; }.start { display:flex; align-items:center; justify-content:center; gap:8px; min-height:51px; margin-top:5px; border:0; border-radius:14px; background:linear-gradient(#f8cb4e,#da8d29); box-shadow:0 5px #9e5924,inset 0 2px rgba(255,255,255,.45); color:#fffdf2; font-size:1rem; font-weight:900; text-shadow:0 2px #905126; cursor:pointer; }.start:disabled { cursor:wait; filter:grayscale(.4); }.status { min-height:1.4em; margin:2px 0 0; color:#536d5c; font-size:.83rem; text-align:center; }.status--error { color:#ad382d; }.back { display:block; width:max-content; margin:20px auto 0; color:#fffdf4; font-weight:800; text-decoration:none; text-shadow:0 1px rgba(24,72,83,.35); } @media (max-width:520px) { .page { padding:34px 14px; }.card { padding:21px 17px; }.field-row { grid-template-columns:1fr; } }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="hero"><p>Shooting Game</p><h1>Lobby Launcher</h1><span>Send a player profile to the separate internal V3 lobby. The original Shooting Game launcher remains unchanged.</span></header>
+      <section class="card">
+        <h2>Player details</h2><p>Send the player level, current XP, and previous stage results through the normal transfer payload.</p>
+        <form id="lobby-launch-form" class="form">
+          <div class="field"><label for="playerName">Player name</label><input id="playerName" maxlength="32" required /></div>
+          <div class="field-row">
+            <div class="field"><label for="playerLevel">Player level</label><input id="playerLevel" type="number" min="1" max="99" value="3" required /></div>
+            <div class="field"><label for="playerExperience">Current XP</label><input id="playerExperience" type="number" min="0" value="40" required /></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="stageResults">Cleared stages</label><input id="stageResults" value="1,2" placeholder="Example: 1,2" /></div>
+            <div class="field"><label for="avatar">Avatar</label><select id="avatar"></select></div>
+          </div>
+          <div id="avatarPreview" class="avatar-preview"></div>
+          <button id="launchButton" class="start" type="submit">Launch Lobby</button>
+          <p id="status" class="status" aria-live="polite"></p>
+        </form>
+      </section>
+      <a class="back" href="../index.html">Back to game select</a>
+    </main>
+    <script src="./index.js"></script>
+  </body>
+</html>
