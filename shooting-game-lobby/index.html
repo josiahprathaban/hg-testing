@@ -5,17 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shooting Game Lobby Launcher</title>
     <style>
-      :root { --ink:#234750; --panel:#fff9e9; --line:#47736d; --accent:#db922d; --muted:#6f715c; }
-      * { box-sizing:border-box; } body { margin:0; min-height:100vh; color:var(--ink); font-family:"Trebuchet MS",sans-serif; background:radial-gradient(circle at 50% 105%,#78ad71 0 21%,transparent 22%),linear-gradient(#55c5ed 0%,#c9f0ed 55%,#84bf80 56%,#41755b 100%); }
-      .page { width:min(760px,100%); margin:0 auto; padding:52px 20px; } .hero { color:#fffdf5; text-align:center; text-shadow:0 2px rgba(24,72,83,.3); }.hero p { margin:0; font-size:.75rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; }.hero h1 { margin:8px 0 0; font-family:Georgia,serif; font-size:clamp(2rem,5vw,3.2rem); line-height:.95; }.hero span { display:block; margin:14px auto 0; max-width:540px; font-size:.92rem; line-height:1.45; }
-      .card { margin-top:27px; padding:28px; border:3px solid var(--line); border-radius:22px; background:linear-gradient(145deg,rgba(255,252,239,.97),rgba(225,238,214,.94)); box-shadow:0 18px 30px rgba(21,60,51,.25),inset 0 1px #fff; }.card h2 { margin:0; font-family:Georgia,serif; font-size:1.5rem; }.card>p { margin:8px 0 21px; color:var(--muted); line-height:1.45; }.form { display:grid; gap:16px; }.field { display:grid; gap:7px; }.field-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; } label { color:#705d3b; font-size:.73rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; } input,select { width:100%; min-height:45px; padding:10px 12px; border:2px solid #c6ad75; border-radius:11px; background:#fffdf4; color:#294d54; font:inherit; }.avatar-preview { display:flex; gap:12px; align-items:center; padding:12px; border:1px solid #cbb17c; border-radius:12px; background:rgba(255,255,255,.5); }.avatar-preview__badge { display:grid; width:47px; height:47px; place-items:center; border:3px solid #315763; border-radius:15px; background:#70bdd2; color:#fffdf2; font-family:Georgia,serif; font-weight:900; }.avatar-preview strong { display:block; }.avatar-preview span { color:var(--muted); font-size:.78rem; }.start { display:flex; align-items:center; justify-content:center; gap:8px; min-height:51px; margin-top:5px; border:0; border-radius:14px; background:linear-gradient(#f8cb4e,#da8d29); box-shadow:0 5px #9e5924,inset 0 2px rgba(255,255,255,.45); color:#fffdf2; font-size:1rem; font-weight:900; text-shadow:0 2px #905126; cursor:pointer; }.start:disabled { cursor:wait; filter:grayscale(.4); }.status { min-height:1.4em; margin:2px 0 0; color:#536d5c; font-size:.83rem; text-align:center; }.status--error { color:#ad382d; }.back { display:block; width:max-content; margin:20px auto 0; color:#fffdf4; font-weight:800; text-decoration:none; text-shadow:0 1px rgba(24,72,83,.35); } @media (max-width:520px) { .page { padding:34px 14px; }.card { padding:21px 17px; }.field-row { grid-template-columns:1fr; } }
+      :root { color-scheme:light; --ink:#684b40; --panel:#fff9eb; --line:#d7b9a0; --muted:#826b60; }
+      * { box-sizing:border-box; }
+      body { margin:0; min-height:100dvh; color:var(--ink); font-family:"Trebuchet MS","Segoe UI",sans-serif; background:linear-gradient(#f6d9b4,#fff0c8 52%,#c2e9e7); }
+      .page { width:min(460px,100%); margin:0 auto; padding:36px 16px 28px; }
+      .hero { text-align:center; }
+      .hero p { margin:0; color:var(--muted); font-size:.75rem; font-weight:700; }
+      .hero h1 { margin:5px 0 8px; font-size:1.9rem; font-weight:850; }
+      .hero span { font-size:.85rem; color:var(--muted); line-height:1.5; }
+      .card { margin-top:22px; padding:22px; border:3px solid var(--line); border-radius:26px; background:var(--panel); box-shadow:0 5px 0 #bf967f; }
+      .card h2 { margin:0; font-size:1.25rem; }
+      .card>p { margin:7px 0 20px; color:var(--muted); font-size:.8rem; line-height:1.5; }
+      .form { display:grid; gap:14px; }
+      .field { display:grid; min-width:0; gap:6px; }
+      .field-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+      label { font-size:.75rem; font-weight:750; }
+      input,select { width:100%; min-width:0; min-height:44px; padding:10px 11px; border:2px solid #ddbea0; border-radius:13px; background:#fffdf6; color:var(--ink); font:inherit; font-size:.85rem; }
+      input::placeholder { color:#9b8275; }
+      input:focus,select:focus { border-color:#39b7c7; }
+      :focus-visible { outline:3px solid #39b7c7; outline-offset:3px; }
+      .avatar-preview { display:flex; gap:10px; align-items:center; padding:12px; border:2px solid #d99b77; border-radius:17px; background:#ffd4ac; }
+      .avatar-preview__badge { display:grid; width:44px; height:44px; flex-shrink:0; place-items:center; border:2px solid #39b7c7; border-radius:13px; background:#eefcfc; color:#2998a8; font-size:.9rem; font-weight:850; }
+      .avatar-preview strong { display:block; font-size:.9rem; }
+      .avatar-preview span { display:block; margin-top:3px; color:var(--muted); font-size:.72rem; }
+      .start { display:flex; align-items:center; justify-content:center; gap:8px; min-height:54px; margin-top:2px; border:2px solid #d9a446; border-radius:17px; background:#ffda7b; box-shadow:0 4px 0 #d9a446; color:#76512c; font:inherit; font-size:1.1rem; font-weight:850; cursor:pointer; }
+      .start:hover:not(:disabled) { background:#ffe396; }
+      .start:disabled { cursor:wait; background:#ffe8ad; box-shadow:none; }
+      .start:disabled::before { content:""; width:17px; height:17px; border:2px solid #d9a446; border-top-color:#76512c; border-radius:50%; animation:spin .8s linear infinite; }
+      .status { min-height:1.4em; margin:2px 0 0; color:var(--muted); font-size:.75rem; line-height:1.5; overflow-wrap:anywhere; text-align:center; }
+      .status--error { color:#b74452; }
+      .back { display:block; width:max-content; margin:22px auto 0; padding:9px 14px; border-radius:15px; background:var(--panel); color:#588b8a; font-size:.8rem; font-weight:750; text-decoration:none; }
+      @keyframes spin { to { transform:rotate(360deg); } }
+      @media (max-width:360px) { .page { padding:26px 12px; } .card { padding:18px 14px; } .field-row { gap:9px; } }
+      @media (prefers-reduced-motion:reduce) { .start:disabled::before { animation:none; } }
     </style>
   </head>
   <body>
     <main class="page">
-      <header class="hero"><p>Shooting Game</p><h1>Lobby Launcher</h1><span>Send a player profile to the separate internal V3 lobby. The original Shooting Game launcher remains unchanged.</span></header>
+      <header class="hero"><p>Test platform</p><h1>Shooting Game</h1><span>Choose your player and open the lobby.</span></header>
       <section class="card">
-        <h2>Player details</h2><p>Send the player level, current XP, and previous stage results through the normal transfer payload.</p>
+        <h2>Ready to play?</h2><p>Set up your player for the next adventure.</p>
         <form id="lobby-launch-form" class="form">
           <div class="field"><label for="playerName">Player name</label><input id="playerName" maxlength="32" required /></div>
           <div class="field-row">
@@ -27,11 +56,11 @@
             <div class="field"><label for="avatar">Avatar</label><select id="avatar"></select></div>
           </div>
           <div id="avatarPreview" class="avatar-preview"></div>
-          <button id="launchButton" class="start" type="submit">Launch Lobby</button>
+          <button id="launchButton" class="start" type="submit">Let's play!</button>
           <p id="status" class="status" aria-live="polite"></p>
         </form>
       </section>
-      <a class="back" href="../index.html">Back to game select</a>
+      <a class="back" href="../index.html">← Back to games</a>
     </main>
     <script src="./index.js"></script>
   </body>

@@ -47,7 +47,7 @@ const restore = () => {
 }
 const updateAvatarPreview = () => {
   const character = currentCharacter()
-  avatarPreview.innerHTML = `<div class="avatar-preview__badge">${character.name.slice(0, 2).toUpperCase()}</div><div><strong>${character.name}</strong><span>Host-platform avatar payload</span></div>`
+  avatarPreview.innerHTML = `<div class="avatar-preview__badge">${character.name.slice(0, 2).toUpperCase()}</div><div><strong>${character.name}</strong><span>Your adventure buddy</span></div>`
 }
 
 characters.forEach((character) => {
